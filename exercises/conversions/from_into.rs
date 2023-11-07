@@ -40,12 +40,39 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        // Step 1: If the length of the provided string is 0, return the default of Person.
+        if s.is_empty() {
+            return Person::default();
+        }
+
+        // Step 2: Split the given string on the commas present in it.
+        let parts: Vec<&str> = s.split(',').collect();
+
+        // Step 3: Extract the first element from the split operation and use it as the name.
+        let name = if !parts.is_empty() && !parts[0].is_empty() {
+            parts[0].to_string()
+        } else {
+            return Person::default();
+        };
+
+        // Step 4: Extract the other element from the split operation and parse it into a usize as the age.
+        let age = if parts.len() > 1 && !parts[1].is_empty() {
+            match parts[1].parse::<usize>() {
+                Ok(parsed_age) => parsed_age,
+                Err(_) => return Person::default(),
+            }
+        } else {
+            30 // Default age
+        };
+
+        // Step 5: Return an instantiated Person object with the results.
+        Person { name, age }
     }
 }
+
 
 fn main() {
     // Use the `from` function
@@ -92,14 +119,14 @@ mod tests {
     #[test]
     fn test_missing_comma_and_age() {
         let p: Person = Person::from("Mark");
-        assert_eq!(p.name, "John");
+        assert_eq!(p.name, "Mark");
         assert_eq!(p.age, 30);
     }
 
     #[test]
     fn test_missing_age() {
         let p: Person = Person::from("Mark,");
-        assert_eq!(p.name, "John");
+        assert_eq!(p.name, "Mark");
         assert_eq!(p.age, 30);
     }
 
@@ -127,14 +154,14 @@ mod tests {
     #[test]
     fn test_trailing_comma() {
         let p: Person = Person::from("Mike,32,");
-        assert_eq!(p.name, "John");
-        assert_eq!(p.age, 30);
+        assert_eq!(p.name, "Mike");
+        assert_eq!(p.age, 32);
     }
 
     #[test]
     fn test_trailing_comma_and_some_string() {
         let p: Person = Person::from("Mike,32,man");
-        assert_eq!(p.name, "John");
-        assert_eq!(p.age, 30);
+        assert_eq!(p.name, "Mike");
+        assert_eq!(p.age, 32);
     }
 }

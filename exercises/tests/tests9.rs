@@ -30,8 +30,12 @@
 // I AM NOT DONE
 
 extern "Rust" {
-    fn my_demo_function(a: u32) -> u32;
-    fn my_demo_function_alias(a: u32) -> u32;
+    #[no_mangle] // 添加此属性，以确保不混淆函数名称
+    #[allow(non_snake_case)] // 添加此属性，以允许函数名不符合 Rust 命名规范
+    pub fn my_demo_function(a: u32) -> u32;
+    #[no_mangle] // 添加此属性，以确保不混淆函数名称
+    #[allow(non_snake_case)] // 添加此属性，以允许函数名不符合 Rust 命名规范
+    pub fn my_demo_function_alias(a: u32) -> u32;
 }
 
 mod Foo {
