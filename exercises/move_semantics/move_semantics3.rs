@@ -20,11 +20,11 @@ fn main() {
     println!("{} has length {} content `{:?}`", "vec1", vec1.len(), vec1);
 }
 
-fn fill_vec(&vec: Vec<i32>) -> Vec<i32> {
-    let mut vcc = vcc;
-    vec.push(22);
-    vec.push(44);
-    vec.push(66);
+fn fill_vec(vec: &Vec<i32>) -> Vec<i32> {
+    let mut vcc = vec.clone();
+    vcc.push(22);
+    vcc.push(44);
+    vcc.push(66);
 
-    vec
+    vcc
 }

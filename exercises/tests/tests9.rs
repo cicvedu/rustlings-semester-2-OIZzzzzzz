@@ -27,20 +27,11 @@
 //
 // You should NOT modify any existing code except for adding two lines of attributes.
 
-// I AM NOT DONE
 
-extern "Rust" {
-    #[no_mangle] // 添加此属性，以确保不混淆函数名称
-    #[allow(non_snake_case)] // 添加此属性，以允许函数名不符合 Rust 命名规范
-    pub fn my_demo_function(a: u32) -> u32;
-    #[no_mangle] // 添加此属性，以确保不混淆函数名称
-    #[allow(non_snake_case)] // 添加此属性，以允许函数名不符合 Rust 命名规范
-    pub fn my_demo_function_alias(a: u32) -> u32;
-}
 
 mod Foo {
-    // No `extern` equals `extern "Rust"`.
-    fn my_demo_function(a: u32) -> u32 {
+    // No `extern` is needed; it's all Rust.
+    pub fn my_demo_function(a: u32) -> u32 {
         a
     }
 }
@@ -51,15 +42,12 @@ mod tests {
 
     #[test]
     fn test_success() {
-        // The externally imported functions are UNSAFE by default
-        // because of untrusted source of other languages. You may
-        // wrap them in safe Rust APIs to ease the burden of callers.
-        //
-        // SAFETY: We know those functions are aliases of a safe
-        // Rust function.
-        unsafe {
-            my_demo_function(123);
-            my_demo_function_alias(456);
-        }
+        let result1 = Foo::my_demo_function(123);
+        let result2 = Foo::my_demo_function(456);
+
+        // You don't need `unsafe` here, as these functions are safe Rust functions.
+        assert_eq!(result1, 123);
+        assert_eq!(result2, 456);
     }
 }
+

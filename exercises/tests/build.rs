@@ -3,19 +3,18 @@
 //! You should modify this file to make both exercises pass.
 
 fn main() {
-    // 获取当前时间戳
+    // In tests7, we should set up an environment variable
+    // called `TEST_FOO`. Print in the standard output to let
+    // Cargo do it.
     let timestamp = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
-        .as_secs();
+        .as_secs(); // What's the use of this timestamp here?
+    let set_test_foo_command = format!("cargo:rustc-env=TEST_FOO={}", timestamp);
+    println!("{}", set_test_foo_command);
 
-    // 将时间戳转换为字符串并设置为环境变量 TEST_FOO 的值
-    let timestamp_str = timestamp.to_string();
-    std::env::set_var("TEST_FOO", &timestamp_str);
-
-    // 打印标准输出以告诉 Cargo 有关环境变量
-    println!("cargo:rerun-if-changed=build.rs");
-
-    // 添加 feature "pass" 的配置
+    // In tests8, we should enable "pass" feature to make the
+    // testcase return early. Fill in the command to tell
+    // Cargo about that.
     println!("cargo:rustc-cfg=feature=\"pass\"");
 }
